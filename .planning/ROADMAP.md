@@ -12,7 +12,7 @@ Deliver a stateless claim extraction API and web UI that lets Geo curators paste
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [x] **Phase 1: Core Extraction API** - Working API endpoint that accepts source text and returns topic-organized claims
+- [ ] **Phase 1: Core Extraction API** - Working API endpoint that accepts source text and returns topic-organized claims
 - [ ] **Phase 2: Web UI** - Plain HTML/JS interface for curators to paste text, view claims, and export CSV
 - [ ] **Phase 3: Deployment** - Dockerized service running on Railway with health checks
 
@@ -28,12 +28,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. `GET /health` returns `{ "status": "ok" }` without making any Gemini API calls
   4. Gemini API errors (429 rate limit, 503 service unavailable) are retried with backoff and surface as clear error responses if retries are exhausted
   5. `ruff check`, `mypy --strict`, and `pytest` all pass cleanly
-**Plans**: 3 plans
+**Plans**: 4 plans
 
 Plans:
 - [x] 01-01-PLAN.md — Project foundation: UV init, settings, schemas, exceptions, health endpoint, FastAPI app
 - [x] 01-02-PLAN.md — Extraction pipeline: adapted prompts, topic/claim extractors with retry, orchestration service
 - [x] 01-03-PLAN.md — API integration: generate endpoint, dependency injection, full test suite
+- [ ] 01-04-PLAN.md — Gap closure: make health endpoint work without GEMINI_API_KEY
 
 ### Phase 2: Web UI
 **Goal**: Non-technical curators can paste source text into a web page and get a clean table of claims they can export
@@ -68,6 +69,6 @@ Phases execute in numeric order: 1 -> 2 -> 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|---------------|--------|-----------|
-| 1. Core Extraction API | 3/3 | ✓ Complete | 2026-02-14 |
+| 1. Core Extraction API | 3/4 | Gap closure needed | - |
 | 2. Web UI | 0/TBD | Not started | - |
 | 3. Deployment | 0/TBD | Not started | - |
