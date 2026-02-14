@@ -30,19 +30,26 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     logger.info("Starting Claim API on port %d", settings.port)
     logger.info("Gemini model: %s", settings.gemini_model)
 
-    client = genai.Client(api_key=settings.gemini_api_key)
     app.state.settings = settings
-    app.state.gemini_client = client
 
-    topic_extractor = TopicExtractor(
-        client, settings.gemini_model, settings.gemini_temperature
-    )
-    claim_extractor = ClaimExtractor(
-        client, settings.gemini_model, settings.gemini_temperature
-    )
-    app.state.claim_generation_service = ClaimGenerationService(
-        topic_extractor, claim_extractor
-    )
+    if settings.gemini_api_key:
+        client = genai.Client(api_key=settings.gemini_api_key)
+        app.state.gemini_client = client
+
+        topic_extractor = TopicExtractor(
+            client, settings.gemini_model, settings.gemini_temperature
+        )
+        claim_extractor = ClaimExtractor(
+            client, settings.gemini_model, settings.gemini_temperature
+        )
+        app.state.claim_generation_service = ClaimGenerationService(
+            topic_extractor, claim_extractor
+        )
+    else:
+        logger.warning(
+            "GEMINI_API_KEY not set -- /generate endpoints will return 503"
+        )
+        app.state.claim_generation_service = None
 
     yield
 
