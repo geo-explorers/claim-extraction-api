@@ -57,10 +57,10 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. `docker build` produces a working image and `docker run` starts the service that responds to requests on the configured PORT
   2. Railway deployment succeeds with health check passing at `/health` and the full curator workflow (paste text, generate claims, export CSV) works end-to-end at the deployed URL
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] 03-01: TBD
+- [ ] 03-01-PLAN.md — Docker containerization with UV multi-stage build, .dockerignore, Railway config, local image verification
 
 ## Progress
 
@@ -71,4 +71,4 @@ Phases execute in numeric order: 1 -> 2 -> 3
 |-------|---------------|--------|-----------|
 | 1. Core Extraction API | 4/4 | ✓ Complete | 2026-02-14 |
 | 2. Web UI | 1/1 | ✓ Complete | 2026-02-14 |
-| 3. Deployment | 0/TBD | Not started | - |
+| 3. Deployment | 0/1 | Not started | - |
