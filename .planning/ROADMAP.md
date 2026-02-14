@@ -28,11 +28,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. `GET /health` returns `{ "status": "ok" }` without making any Gemini API calls
   4. Gemini API errors (429 rate limit, 503 service unavailable) are retried with backoff and surface as clear error responses if retries are exhausted
   5. `ruff check`, `mypy --strict`, and `pytest` all pass cleanly
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md — Project foundation: UV init, settings, schemas, exceptions, health endpoint, FastAPI app
+- [ ] 01-02-PLAN.md — Extraction pipeline: adapted prompts, topic/claim extractors with retry, orchestration service
+- [ ] 01-03-PLAN.md — API integration: generate endpoint, dependency injection, full test suite
 
 ### Phase 2: Web UI
 **Goal**: Non-technical curators can paste source text into a web page and get a clean table of claims they can export
@@ -67,6 +68,6 @@ Phases execute in numeric order: 1 -> 2 -> 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|---------------|--------|-----------|
-| 1. Core Extraction API | 0/TBD | Not started | - |
+| 1. Core Extraction API | 0/3 | Planning complete | - |
 | 2. Web UI | 0/TBD | Not started | - |
 | 3. Deployment | 0/TBD | Not started | - |
