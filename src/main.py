@@ -1,0 +1,62 @@
+"""FastAPI application entry point.
+
+Configures lifespan (startup/shutdown), CORS, exception handlers, and routers.
+"""
+
+import logging
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from google import genai
+
+from src.config.settings import Settings
+from src.routers.health import router as health_router
+
+logger = logging.getLogger(__name__)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    """Application lifespan: validate config and initialize Gemini client."""
+    settings = Settings()
+    logging.basicConfig(level=settings.log_level)
+    logger.info("Starting Claim API on port %d", settings.port)
+    logger.info("Gemini model: %s", settings.gemini_model)
+
+    client = genai.Client(api_key=settings.gemini_api_key)
+    app.state.settings = settings
+    app.state.gemini_client = client
+
+    yield
+
+    logger.info("Shutting down Claim API")
+
+
+app = FastAPI(
+    lifespan=lifespan,
+    title="Claim Extraction API",
+    version="1.0.0",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.exception_handler(Exception)
+async def generic_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    """Handle unexpected exceptions with a safe error response."""
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "An unexpected error occurred"},
+    )
+
+
+app.include_router(health_router)
