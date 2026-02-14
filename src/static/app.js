@@ -67,7 +67,7 @@ function renderClaims(claims) {
         // Topic header row
         const headerRow = document.createElement("tr");
         headerRow.className = "bg-gray-100";
-        headerRow.innerHTML = `<td colspan="2" class="border border-gray-200 px-3 py-2 font-bold text-sm">
+        headerRow.innerHTML = `<td class="border border-gray-200 px-3 py-2 font-bold text-sm">
             ${escapeHTML(topic)} (${topicClaims.length} claims)
         </td>`;
         claimsBody.appendChild(headerRow);
@@ -75,10 +75,7 @@ function renderClaims(claims) {
         // Claim rows
         for (const claim of topicClaims) {
             const row = document.createElement("tr");
-            row.innerHTML = `
-                <td class="border border-gray-200 px-3 py-2 text-sm text-gray-500">${escapeHTML(topic)}</td>
-                <td class="border border-gray-200 px-3 py-2 text-sm">${escapeHTML(claim)}</td>
-            `;
+            row.innerHTML = `<td class="border border-gray-200 px-3 py-2 text-sm">${escapeHTML(claim)}</td>`;
             claimsBody.appendChild(row);
         }
     }
