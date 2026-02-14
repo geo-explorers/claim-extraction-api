@@ -9,28 +9,28 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 
 ## Current Position
 
-Phase: 1 of 3 (Core Extraction API)
-Plan: 2 of 3 in current phase
-Status: Executing
-Last activity: 2026-02-14 -- Completed 01-02-PLAN.md
+Phase: 1 of 3 (Core Extraction API) -- COMPLETE
+Plan: 3 of 3 in current phase
+Status: Phase Complete
+Last activity: 2026-02-14 -- Completed 01-03-PLAN.md
 
-Progress: [██████░░░░] 22%
+Progress: [███████████] 33%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 3.5min
-- Total execution time: 0.12 hours
+- Total plans completed: 3
+- Average duration: 4min
+- Total execution time: 0.2 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-core-extraction-api | 2/3 | 7min | 3.5min |
+| 01-core-extraction-api | 3/3 | 12min | 4min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3min), 01-02 (4min)
+- Last 5 plans: 01-01 (3min), 01-02 (4min), 01-03 (5min)
 - Trend: Steady
 
 *Updated after each plan completion*
@@ -50,6 +50,9 @@ Recent decisions affecting current work:
 - [01-02]: Retry predicate uses google.genai.errors.ServerError + ClientError(code=429) since google.api_core not installed
 - [01-02]: genai.Client import in TYPE_CHECKING block (from __future__ annotations makes it string-only at runtime)
 - [01-02]: Removed ad-filtering from claim prompt -- generic source texts have legitimate URLs/CTAs
+- [01-03]: All service instances constructed in lifespan and stored on app.state for singleton behavior
+- [01-03]: Used Annotated[..., Depends()] pattern to satisfy ruff B008
+- [01-03]: TYPE_CHECKING blocks in tests for mock type imports to satisfy ruff TC003
 
 ### Pending Todos
 
@@ -62,5 +65,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: Completed 01-02-PLAN.md (extraction pipeline). Next: 01-03-PLAN.md (API endpoint)
-Resume file: .planning/phases/01-core-extraction-api/01-02-SUMMARY.md
+Stopped at: Completed 01-03-PLAN.md (API endpoint + tests). Phase 1 complete. Next: Phase 2
+Resume file: .planning/phases/01-core-extraction-api/01-03-SUMMARY.md
