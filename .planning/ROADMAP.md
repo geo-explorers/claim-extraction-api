@@ -45,10 +45,10 @@ Plans:
   2. Clicking Generate shows a loading indicator, disables the button, and then renders claims as a table with `claim_topic` and `claim` columns
   3. User can click an Export CSV button that downloads a `.csv` file containing all displayed claims with proper escaping
   4. If the API returns an error, the user sees a human-readable error message (not a blank screen or raw JSON)
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] 02-01: TBD
+- [ ] 02-01-PLAN.md — Web UI: Jinja2 template with Tailwind, vanilla JS frontend, FastAPI route wiring, tests
 
 ### Phase 3: Deployment
 **Goal**: The service is running on Railway and accessible to curators via a public URL
@@ -70,5 +70,5 @@ Phases execute in numeric order: 1 -> 2 -> 3
 | Phase | Plans Complete | Status | Completed |
 |-------|---------------|--------|-----------|
 | 1. Core Extraction API | 4/4 | ✓ Complete | 2026-02-14 |
-| 2. Web UI | 0/TBD | Not started | - |
+| 2. Web UI | 0/1 | In progress | - |
 | 3. Deployment | 0/TBD | Not started | - |
