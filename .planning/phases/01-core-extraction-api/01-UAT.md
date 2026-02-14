@@ -1,5 +1,5 @@
 ---
-status: complete
+status: diagnosed
 phase: 01-core-extraction-api
 source: 01-01-SUMMARY.md, 01-02-SUMMARY.md, 01-03-SUMMARY.md
 started: 2026-02-14T14:00:00Z
@@ -49,7 +49,12 @@ skipped: 0
   reason: "User reported: App crashes on startup with ValidationError for missing gemini_api_key. Health endpoint is unreachable without setting GEMINI_API_KEY, even though health should not require Gemini."
   severity: blocker
   test: 2
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "FastAPI lifespan in src/main.py line 28 unconditionally creates Settings() which requires gemini_api_key. Pydantic validation crashes the app before any routes can respond."
+  artifacts:
+    - path: "src/main.py"
+      issue: "Lifespan unconditionally creates Settings() on line 28, blocking startup without GEMINI_API_KEY"
+    - path: "src/config/settings.py"
+      issue: "gemini_api_key: str has no default, making it required for any app startup"
+  missing:
+    - "Make gemini_api_key optional or defer Gemini client creation so health endpoint works without it"
+  debug_session: ".planning/debug/health-endpoint-blocker.md"
