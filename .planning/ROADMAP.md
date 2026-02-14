@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Core Extraction API** - Working API endpoint that accepts source text and returns topic-organized claims
 - [x] **Phase 2: Web UI** - Plain HTML/JS interface for curators to paste text, view claims, and export CSV
-- [ ] **Phase 3: Deployment** - Dockerized service running on Railway with health checks
+- [x] **Phase 3: Deployment** - Dockerized service running on Railway with health checks
 
 ## Phase Details
 
@@ -60,7 +60,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 03-01-PLAN.md — Docker containerization with UV multi-stage build, .dockerignore, Railway config, local image verification
+- [x] 03-01-PLAN.md — Docker containerization with UV multi-stage build, .dockerignore, Railway config, local image verification
 
 ## Progress
 
@@ -71,4 +71,4 @@ Phases execute in numeric order: 1 -> 2 -> 3
 |-------|---------------|--------|-----------|
 | 1. Core Extraction API | 4/4 | ✓ Complete | 2026-02-14 |
 | 2. Web UI | 1/1 | ✓ Complete | 2026-02-14 |
-| 3. Deployment | 0/1 | Not started | - |
+| 3. Deployment | 1/1 | ✓ Complete | 2026-02-14 |
