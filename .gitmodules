@@ -1,0 +1,3 @@
+[submodule "submodules/extraction-api"]
+	path = submodules/extraction-api
+	url = git@github.com:geo-explorers/extraction-api.git
