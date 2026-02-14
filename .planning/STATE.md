@@ -10,27 +10,27 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 ## Current Position
 
 Phase: 1 of 3 (Core Extraction API) -- COMPLETE
-Plan: 3 of 3 in current phase
-Status: Phase Complete
-Last activity: 2026-02-14 -- Completed 01-03-PLAN.md
+Plan: 4 of 4 in current phase
+Status: Phase Complete (gap closure done)
+Last activity: 2026-02-14 -- Completed 01-04-PLAN.md (gap closure)
 
 Progress: [███████████] 33%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
+- Total plans completed: 4
 - Average duration: 4min
-- Total execution time: 0.2 hours
+- Total execution time: 0.25 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-core-extraction-api | 3/3 | 12min | 4min |
+| 01-core-extraction-api | 4/4 | 15min | 4min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3min), 01-02 (4min), 01-03 (5min)
+- Last 5 plans: 01-01 (3min), 01-02 (4min), 01-03 (5min), 01-04 (3min)
 - Trend: Steady
 
 *Updated after each plan completion*
@@ -53,6 +53,9 @@ Recent decisions affecting current work:
 - [01-03]: All service instances constructed in lifespan and stored on app.state for singleton behavior
 - [01-03]: Used Annotated[..., Depends()] pattern to satisfy ruff B008
 - [01-03]: TYPE_CHECKING blocks in tests for mock type imports to satisfy ruff TC003
+- [01-04]: gemini_api_key is str | None with default=None -- not required at startup
+- [01-04]: app.state.claim_generation_service = None when key absent; dependency raises 503
+- [01-04]: monkeypatch.setenv (empty string) overrides .env file in pydantic-settings tests
 
 ### Pending Todos
 
@@ -65,5 +68,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: Completed 01-03-PLAN.md (API endpoint + tests). Phase 1 complete. Next: Phase 2
-Resume file: .planning/phases/01-core-extraction-api/01-03-SUMMARY.md
+Stopped at: Completed 01-04-PLAN.md (gap closure). Phase 1 fully complete including UAT gap fix. Next: Phase 2
+Resume file: .planning/phases/01-core-extraction-api/01-04-SUMMARY.md
