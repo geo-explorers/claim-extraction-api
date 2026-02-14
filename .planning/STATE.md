@@ -5,33 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** Curators can paste any source text and get back a clean table of topic-organized, self-contained claims ready for the Geo knowledge graph.
-**Current focus:** Phase 1 - Core Extraction API
+**Current focus:** Phase 2 - Web UI
 
 ## Current Position
 
-Phase: 1 of 3 (Core Extraction API) -- COMPLETE
-Plan: 4 of 4 in current phase
-Status: Phase Complete (gap closure done)
-Last activity: 2026-02-14 -- Completed 01-04-PLAN.md (gap closure)
+Phase: 2 of 3 (Web UI) -- COMPLETE
+Plan: 1 of 1 in current phase
+Status: Phase Complete
+Last activity: 2026-02-14 -- Completed 02-01-PLAN.md (web UI)
 
-Progress: [███████████] 33%
+Progress: [██████████████████████] 67%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: 4min
-- Total execution time: 0.25 hours
+- Total plans completed: 5
+- Average duration: 3min
+- Total execution time: 0.28 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-core-extraction-api | 4/4 | 15min | 4min |
+| 02-web-ui | 1/1 | 2min | 2min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3min), 01-02 (4min), 01-03 (5min), 01-04 (3min)
-- Trend: Steady
+- Last 5 plans: 01-02 (4min), 01-03 (5min), 01-04 (3min), 02-01 (2min)
+- Trend: Steady/Improving
 
 *Updated after each plan completion*
 
@@ -56,6 +57,9 @@ Recent decisions affecting current work:
 - [01-04]: gemini_api_key is str | None with default=None -- not required at startup
 - [01-04]: app.state.claim_generation_service = None when key absent; dependency raises 503
 - [01-04]: monkeypatch.setenv (empty string) overrides .env file in pydantic-settings tests
+- [02-01]: Route inline in main.py -- single GET / route doesn't warrant separate ui.py router
+- [02-01]: Tailwind v4 CDN -- current version, no v3 lock-in, modern browser support sufficient
+- [02-01]: BASE_DIR = Path(__file__).resolve().parent for template/static directory resolution
 
 ### Pending Todos
 
@@ -68,5 +72,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: Completed 01-04-PLAN.md (gap closure). Phase 1 fully complete including UAT gap fix. Next: Phase 2
-Resume file: .planning/phases/01-core-extraction-api/01-04-SUMMARY.md
+Stopped at: Completed 02-01-PLAN.md (web UI). Phase 2 fully complete. Next: Phase 3
+Resume file: .planning/phases/02-web-ui/02-01-SUMMARY.md
