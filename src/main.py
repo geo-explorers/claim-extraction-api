@@ -13,14 +13,18 @@ from fastapi.responses import JSONResponse
 from google import genai
 
 from src.config.settings import Settings
+from src.extraction.claim_extractor import ClaimExtractor
+from src.extraction.topic_extractor import TopicExtractor
+from src.routers.generate import router as generate_router
 from src.routers.health import router as health_router
+from src.services.claim_generation import ClaimGenerationService
 
 logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    """Application lifespan: validate config and initialize Gemini client."""
+    """Application lifespan: validate config and initialize services."""
     settings = Settings()
     logging.basicConfig(level=settings.log_level)
     logger.info("Starting Claim API on port %d", settings.port)
@@ -29,6 +33,16 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     client = genai.Client(api_key=settings.gemini_api_key)
     app.state.settings = settings
     app.state.gemini_client = client
+
+    topic_extractor = TopicExtractor(
+        client, settings.gemini_model, settings.gemini_temperature
+    )
+    claim_extractor = ClaimExtractor(
+        client, settings.gemini_model, settings.gemini_temperature
+    )
+    app.state.claim_generation_service = ClaimGenerationService(
+        topic_extractor, claim_extractor
+    )
 
     yield
 
@@ -60,3 +74,4 @@ async def generic_exception_handler(request: Request, exc: Exception) -> JSONRes
 
 
 app.include_router(health_router)
+app.include_router(generate_router)
