@@ -12,7 +12,7 @@ Deliver a stateless claim extraction API and web UI that lets Geo curators paste
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Core Extraction API** - Working API endpoint that accepts source text and returns topic-organized claims
+- [x] **Phase 1: Core Extraction API** - Working API endpoint that accepts source text and returns topic-organized claims
 - [ ] **Phase 2: Web UI** - Plain HTML/JS interface for curators to paste text, view claims, and export CSV
 - [ ] **Phase 3: Deployment** - Dockerized service running on Railway with health checks
 
@@ -31,9 +31,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Project foundation: UV init, settings, schemas, exceptions, health endpoint, FastAPI app
-- [ ] 01-02-PLAN.md — Extraction pipeline: adapted prompts, topic/claim extractors with retry, orchestration service
-- [ ] 01-03-PLAN.md — API integration: generate endpoint, dependency injection, full test suite
+- [x] 01-01-PLAN.md — Project foundation: UV init, settings, schemas, exceptions, health endpoint, FastAPI app
+- [x] 01-02-PLAN.md — Extraction pipeline: adapted prompts, topic/claim extractors with retry, orchestration service
+- [x] 01-03-PLAN.md — API integration: generate endpoint, dependency injection, full test suite
 
 ### Phase 2: Web UI
 **Goal**: Non-technical curators can paste source text into a web page and get a clean table of claims they can export
@@ -68,6 +68,6 @@ Phases execute in numeric order: 1 -> 2 -> 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|---------------|--------|-----------|
-| 1. Core Extraction API | 0/3 | Planning complete | - |
+| 1. Core Extraction API | 3/3 | ✓ Complete | 2026-02-14 |
 | 2. Web UI | 0/TBD | Not started | - |
 | 3. Deployment | 0/TBD | Not started | - |
