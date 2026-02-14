@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** Curators can paste any source text and get back a clean table of topic-organized, self-contained claims ready for the Geo knowledge graph.
-**Current focus:** Phase 2 - Web UI
+**Current focus:** Phase 3 - Deployment -- COMPLETE
 
 ## Current Position
 
-Phase: 2 of 3 (Web UI) -- COMPLETE
+Phase: 3 of 3 (Deployment) -- COMPLETE
 Plan: 1 of 1 in current phase
-Status: Phase Complete
-Last activity: 2026-02-14 -- Completed 02-01-PLAN.md (web UI)
+Status: All Phases Complete
+Last activity: 2026-02-14 -- Completed 03-01-PLAN.md (Docker + Railway deployment)
 
-Progress: [██████████████████████] 67%
+Progress: [████████████████████████████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
+- Total plans completed: 6
 - Average duration: 3min
-- Total execution time: 0.28 hours
+- Total execution time: 0.33 hours
 
 **By Phase:**
 
@@ -29,10 +29,11 @@ Progress: [██████████████████████] 6
 |-------|-------|-------|----------|
 | 01-core-extraction-api | 4/4 | 15min | 4min |
 | 02-web-ui | 1/1 | 2min | 2min |
+| 03-deployment | 1/1 | 3min | 3min |
 
 **Recent Trend:**
-- Last 5 plans: 01-02 (4min), 01-03 (5min), 01-04 (3min), 02-01 (2min)
-- Trend: Steady/Improving
+- Last 5 plans: 01-03 (5min), 01-04 (3min), 02-01 (2min), 03-01 (3min)
+- Trend: Steady
 
 *Updated after each plan completion*
 
@@ -60,6 +61,9 @@ Recent decisions affecting current work:
 - [02-01]: Route inline in main.py -- single GET / route doesn't warrant separate ui.py router
 - [02-01]: Tailwind v4 CDN -- current version, no v3 lock-in, modern browser support sufficient
 - [02-01]: BASE_DIR = Path(__file__).resolve().parent for template/static directory resolution
+- [03-01]: Removed BuildKit cache mounts for legacy Docker compatibility (--mount=type=cache requires buildx)
+- [03-01]: Shell-form CMD for Railway $PORT expansion (exec-form cannot expand env vars)
+- [03-01]: Added --proxy-headers to uvicorn CMD for Railway reverse proxy
 
 ### Pending Todos
 
@@ -72,5 +76,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: Completed 02-01-PLAN.md (web UI). Phase 2 fully complete. Next: Phase 3
-Resume file: .planning/phases/02-web-ui/02-01-SUMMARY.md
+Stopped at: Completed 03-01-PLAN.md (Docker + Railway deployment). All phases complete. Project ready for production deployment.
+Resume file: .planning/phases/03-deployment/03-01-SUMMARY.md
