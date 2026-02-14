@@ -13,7 +13,7 @@ Deliver a stateless claim extraction API and web UI that lets Geo curators paste
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Core Extraction API** - Working API endpoint that accepts source text and returns topic-organized claims
-- [ ] **Phase 2: Web UI** - Plain HTML/JS interface for curators to paste text, view claims, and export CSV
+- [x] **Phase 2: Web UI** - Plain HTML/JS interface for curators to paste text, view claims, and export CSV
 - [ ] **Phase 3: Deployment** - Dockerized service running on Railway with health checks
 
 ## Phase Details
@@ -48,7 +48,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 02-01-PLAN.md — Web UI: Jinja2 template with Tailwind, vanilla JS frontend, FastAPI route wiring, tests
+- [x] 02-01-PLAN.md — Web UI: Jinja2 template with Tailwind, vanilla JS frontend, FastAPI route wiring, tests
 
 ### Phase 3: Deployment
 **Goal**: The service is running on Railway and accessible to curators via a public URL
@@ -70,5 +70,5 @@ Phases execute in numeric order: 1 -> 2 -> 3
 | Phase | Plans Complete | Status | Completed |
 |-------|---------------|--------|-----------|
 | 1. Core Extraction API | 4/4 | ✓ Complete | 2026-02-14 |
-| 2. Web UI | 0/1 | In progress | - |
+| 2. Web UI | 1/1 | ✓ Complete | 2026-02-14 |
 | 3. Deployment | 0/TBD | Not started | - |
