@@ -11,13 +11,11 @@ ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
 
 # Dependencies layer (cached until lock changes)
 COPY pyproject.toml uv.lock README.md ./
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-install-project --no-dev
+RUN uv sync --locked --no-install-project --no-dev
 
 # Application layer
 COPY src/ src/
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-dev
+RUN uv sync --locked --no-dev
 
 # --- Runtime stage ---
 FROM python:3.12-slim
