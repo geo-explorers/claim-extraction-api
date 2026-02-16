@@ -1,7 +1,8 @@
 """Topic extraction from source text using Gemini structured output.
 
 Extracts an ordered list of discussion topics from arbitrary source text.
-Retries on transient Gemini errors (429 rate limit, 5xx server errors).
+Retries on transient Gemini errors (429 rate limit, 5xx server errors)
+and non-deterministic parse failures (malformed JSON from Gemini).
 """
 
 from __future__ import annotations
@@ -11,6 +12,7 @@ from typing import TYPE_CHECKING, Any, cast
 
 from google.genai import errors as genai_errors
 from google.genai import types
+from json_repair import repair_json
 from tenacity import retry, retry_if_exception, stop_after_attempt, wait_exponential
 
 from src.config.prompts.topic_extraction import TOPIC_EXTRACTION_PROMPT
@@ -24,7 +26,18 @@ logger = logging.getLogger(__name__)
 
 
 def _is_retryable(exc: BaseException) -> bool:
-    """Check if an exception is retryable (429 rate limit or 5xx server error)."""
+    """Check if an exception is retryable.
+
+    Retries on:
+    - Gemini 429 rate limit or 5xx server errors
+    - ExtractionError (non-deterministic malformed JSON from Gemini)
+
+    Does NOT retry SafetyFilterError (content blocked — deterministic).
+    """
+    if isinstance(exc, SafetyFilterError):
+        return False
+    if isinstance(exc, ExtractionError):
+        return True
     if isinstance(exc, genai_errors.ServerError):
         return True
     if isinstance(exc, genai_errors.ClientError):
@@ -75,19 +88,10 @@ class TopicExtractor:
 
         Raises:
             SafetyFilterError: If content is blocked by Gemini safety filters.
-            ExtractionError: If response cannot be parsed.
+            ExtractionError: If response cannot be parsed after retries.
         """
         prompt = TOPIC_EXTRACTION_PROMPT.format(source_text=source_text)
-        response = await self._call_gemini(prompt)
-
-        # Check for safety blocking
-        if response.candidates:
-            finish_reason = response.candidates[0].finish_reason
-            if finish_reason == types.FinishReason.SAFETY:
-                raise SafetyFilterError()
-
-        # Parse response: try .parsed first, fall back to manual JSON parse
-        result = self._parse_response(response)
+        result = await self._call_and_parse(prompt)
         return result.topics
 
     @retry(
@@ -96,13 +100,25 @@ class TopicExtractor:
         retry=retry_if_exception(_is_retryable),
         reraise=True,
     )
-    async def _call_gemini(self, prompt: str) -> Any:
-        """Call Gemini API with retry on transient errors."""
-        return await self._client.aio.models.generate_content(
+    async def _call_and_parse(self, prompt: str) -> TopicResult:
+        """Call Gemini and parse the response, with retry on transient failures."""
+        response = await self._client.aio.models.generate_content(
             model=self._model,
             contents=prompt,
             config=self._config,
         )
+
+        # Check finish reason for blocking or truncation
+        if response.candidates:
+            finish_reason = response.candidates[0].finish_reason
+            if finish_reason == types.FinishReason.SAFETY:
+                raise SafetyFilterError()
+            if finish_reason == types.FinishReason.MAX_TOKENS:
+                raise ExtractionError(
+                    "Topic extraction response truncated (output token limit reached)"
+                )
+
+        return self._parse_response(response)
 
     def _parse_response(self, response: Any) -> TopicResult:
         """Parse Gemini response into TopicResult."""
@@ -115,19 +131,25 @@ class TopicExtractor:
             logger.warning("response.parsed access failed, falling back to text")
 
         # Fall back to manual JSON parsing from response text
+        text: str | None = response.text
+        if text is None:
+            logger.error(
+                "Gemini returned no text; finish_reason=%s",
+                response.candidates[0].finish_reason if response.candidates else "N/A",
+            )
+            raise ExtractionError("Failed to parse topic extraction response: empty text")
+
+        # Try direct parse, then JSON repair fallback
         try:
-            text: str | None = response.text
-            if text is None:
-                logger.error(
-                    "Gemini returned no text; finish_reason=%s",
-                    response.candidates[0].finish_reason if response.candidates else "N/A",
-                )
-                raise ExtractionError("Failed to parse topic extraction response: empty text")
             return TopicResult.model_validate_json(text)
+        except Exception as direct_exc:
+            logger.warning("Direct JSON parse failed, attempting repair: %s", direct_exc)
+
+        try:
+            repaired = repair_json(text)
+            return TopicResult.model_validate_json(repaired)
         except Exception as exc:
-            if isinstance(exc, ExtractionError):
-                raise
-            logger.error("Topic response parse failed: %s", exc)
+            logger.error("Topic response parse failed after repair: %s", exc)
             raise ExtractionError(
                 f"Failed to parse topic extraction response: {exc}"
             ) from exc

@@ -13,6 +13,7 @@ from tenacity import RetryError
 
 from src.exceptions import EmptyExtractionError, LLMProviderError
 from src.schemas.responses import ClaimGenerationResponse, ClaimResponse
+from src.utils.text import sanitize_source_text
 
 if TYPE_CHECKING:
     from src.extraction.claim_extractor import ClaimExtractor
@@ -48,6 +49,9 @@ class ClaimGenerationService:
             ExtractionError: If response parsing fails.
         """
         try:
+            # Normalize Unicode that triggers Gemini JSON escaping bugs
+            source_text = sanitize_source_text(source_text)
+
             # Step 1: Extract topics
             topics = await self._topic_extractor.extract(source_text)
             if not topics:
