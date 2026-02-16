@@ -107,19 +107,27 @@ class TopicExtractor:
     def _parse_response(self, response: Any) -> TopicResult:
         """Parse Gemini response into TopicResult."""
         # Try .parsed first (typed structured output)
-        parsed: TopicResult | None = cast("TopicResult | None", response.parsed)
-        if parsed is not None:
-            return parsed
+        try:
+            parsed: TopicResult | None = cast("TopicResult | None", response.parsed)
+            if parsed is not None:
+                return parsed
+        except Exception:
+            logger.warning("response.parsed access failed, falling back to text")
 
         # Fall back to manual JSON parsing from response text
         try:
             text: str | None = response.text
             if text is None:
-                raise ExtractionError("Failed to parse topic extraction response")
+                logger.error(
+                    "Gemini returned no text; finish_reason=%s",
+                    response.candidates[0].finish_reason if response.candidates else "N/A",
+                )
+                raise ExtractionError("Failed to parse topic extraction response: empty text")
             return TopicResult.model_validate_json(text)
         except Exception as exc:
             if isinstance(exc, ExtractionError):
                 raise
+            logger.error("Topic response parse failed: %s", exc)
             raise ExtractionError(
-                "Failed to parse topic extraction response"
+                f"Failed to parse topic extraction response: {exc}"
             ) from exc

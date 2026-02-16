@@ -114,21 +114,29 @@ class ClaimExtractor:
     def _parse_response(self, response: Any) -> ClaimWithTopicResult:
         """Parse Gemini response into ClaimWithTopicResult."""
         # Try .parsed first (typed structured output)
-        parsed: ClaimWithTopicResult | None = cast(
-            "ClaimWithTopicResult | None", response.parsed
-        )
-        if parsed is not None:
-            return parsed
+        try:
+            parsed: ClaimWithTopicResult | None = cast(
+                "ClaimWithTopicResult | None", response.parsed
+            )
+            if parsed is not None:
+                return parsed
+        except Exception:
+            logger.warning("response.parsed access failed, falling back to text")
 
         # Fall back to manual JSON parsing from response text
         try:
             text: str | None = response.text
             if text is None:
-                raise ExtractionError("Failed to parse claim extraction response")
+                logger.error(
+                    "Gemini returned no text; finish_reason=%s",
+                    response.candidates[0].finish_reason if response.candidates else "N/A",
+                )
+                raise ExtractionError("Failed to parse claim extraction response: empty text")
             return ClaimWithTopicResult.model_validate_json(text)
         except Exception as exc:
             if isinstance(exc, ExtractionError):
                 raise
+            logger.error("Claim response parse failed: %s", exc)
             raise ExtractionError(
-                "Failed to parse claim extraction response"
+                f"Failed to parse claim extraction response: {exc}"
             ) from exc
